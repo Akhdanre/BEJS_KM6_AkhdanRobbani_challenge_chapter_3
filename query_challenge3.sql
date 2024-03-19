@@ -110,10 +110,6 @@ VALUES
     ('penarikan', 'penarikan saldo akun pribadi'),
     ('setor', 'setor tunai ke saldo akun');
 
-SELECT
-    *
-from
-    jenis_transaksi;
 
 --create data for table nasabah
 INSERT INTO
@@ -126,11 +122,6 @@ VALUES
         '085708574368'
     );
 
-SELECT
-    *
-FROM
-    nasabah;
-
 INSERT INTO
     akun (username, password, nasabah_id)
 VALUES
@@ -140,8 +131,3 @@ INSERT INTO
     akun (username, password, nasabah_id)
 VALUES
     ('akhdanre', 'rahasia', 1);
-
-SELECT
-    *
-FROM
-    akun;
