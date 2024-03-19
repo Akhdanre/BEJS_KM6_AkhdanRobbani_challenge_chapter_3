@@ -1,4 +1,4 @@
--- Active: 1710815950743@@127.0.0.1@5432@bank_system
+-- Active: 1710850075448@@127.0.0.1@5432@bank_system
 CREATE DATABASE bank_system;
 
 ----------------- SHOW TABLE PENGGANTI /DT -----------------
@@ -239,6 +239,7 @@ WHERE
     akun.id = transaksi_process.akun_id
     AND akun.id = saldo_akun.id;
 
+------- mendaptkan jumlah transaksi berhdasarkan jenis ----------
 WITH jumlah_transaksi AS (
     SELECT
         akun_id,
@@ -260,10 +261,15 @@ FROM
     RIGHT JOIN jumlah_transaksi ON akun.id = jumlah_transaksi.akun_id
     LEFT JOIN jenis_transaksi ON jumlah_transaksi.count = jenis_transaksi.id;
 
+SELECT
+    *
+FROM
+    transaksi;
+
 DELETE FROM
     transaksi
 WHERE
-    id = 20;
+    id = 2;
 
 SELECT
     *
