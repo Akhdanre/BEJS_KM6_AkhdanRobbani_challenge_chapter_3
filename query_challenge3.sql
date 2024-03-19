@@ -50,10 +50,22 @@ from
 where
     table_name = 'akun';
 
--- CREATE TABLE transaksi(
---     id BIGSERIAL PRIMARY KEY,
---     deskripsi TEXT NOT NULL,
---     tanggal DATE NOT NULL,
---     nominal BIGINT NOT NULL,
---     jenis 
--- )
+CREATE TABLE transaksi(
+    id BIGSERIAL PRIMARY KEY,
+    deskripsi TEXT NOT NULL,
+    tanggal DATE NOT NULL,
+    nominal BIGINT NOT NULL,
+    jenis_id INTEGER NOT NULL,
+    akun_id BIGINT NOT NULL
+);
+
+select
+    column_name,
+    data_type,
+    character_maximum_length,
+    column_default,
+    is_nullable
+from
+    INFORMATION_SCHEMA.COLUMNS
+where
+    table_name = 'transaksi';
