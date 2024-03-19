@@ -76,7 +76,6 @@ CREATE TABLE jenis_transaksi(
     description TEXT NOT NULL
 );
 
-
 select
     column_name,
     data_type,
@@ -87,3 +86,22 @@ from
     INFORMATION_SCHEMA.COLUMNS
 where
     table_name = 'jenis_transaksi';
+
+--add foreign key
+ALTER TABLE
+    akun
+ADD
+    CONSTRAINT fk_nasabah_akun FOREIGN KEY (nasabah_id) REFERENCES nasabah(id);
+
+ALTER TABLE
+    transaksi
+ADD
+    CONSTRAINT fk_transaksi_akun FOREIGN KEY (akun_id) REFERENCES akun(id);
+
+ALTER TABLE
+    transaksi
+ADD
+    CONSTRAINT fk_transaksi_jenis FOREIGN KEY (jenis_id) REFERENCES jenis_transaksi(id);
+
+
+
