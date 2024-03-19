@@ -136,6 +136,13 @@ INSERT INTO
 VALUES
     ('akhdanre', 'rahasia', 1);
 
+UPDATE
+    akun
+set
+    is_active = true
+where
+    id = 1;
+
 SELECT
     *
 from
@@ -258,7 +265,6 @@ DELETE FROM
 WHERE
     id = 20;
 
-
 SELECT
     *
 FROM
@@ -267,4 +273,16 @@ FROM
 DELETE FROM
     akun
 WHERE
-    id = 2;
+    id = 2
+    AND is_active = false;
+
+------ hilangkan semua bukti transaksi -------
+DELETE FROM
+    transaksi
+WHERE
+    akun_id = 1;
+
+DELETE FROM
+    akun
+WHERE
+    id = 1
