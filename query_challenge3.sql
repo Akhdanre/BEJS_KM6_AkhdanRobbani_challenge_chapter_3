@@ -231,3 +231,40 @@ FROM
 WHERE
     akun.id = transaksi_process.akun_id
     AND akun.id = saldo_akun.id;
+
+WITH jumlah_transaksi AS (
+    SELECT
+        akun_id,
+        COUNT(jenis_id)
+    FROM
+        transaksi
+    GROUP BY
+        akun_id,
+        jenis_id
+)
+SELECT
+    nasabah.nama,
+    akun.username,
+    jenis_transaksi.nama as jenis_transaksi,
+    jumlah_transaksi.count as banyak_transaksi
+FROM
+    akun
+    LEFT JOIN nasabah on akun.nasabah_id = akun.id
+    RIGHT JOIN jumlah_transaksi ON akun.id = jumlah_transaksi.akun_id
+    LEFT JOIN jenis_transaksi ON jumlah_transaksi.count = jenis_transaksi.id;
+
+DELETE FROM
+    transaksi
+WHERE
+    id = 20;
+
+
+SELECT
+    *
+FROM
+    akun;
+
+DELETE FROM
+    akun
+WHERE
+    id = 2;
