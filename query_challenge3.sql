@@ -1,7 +1,7 @@
 -- Active: 1710815950743@@127.0.0.1@5432@bank_system
 CREATE DATABASE bank_system;
 
--- SHOW TABLE PENGGANTI /DT
+----------------- SHOW TABLE PENGGANTI /DT -----------------
 SELECT
     *
 FROM
@@ -9,6 +9,7 @@ FROM
 WHERE
     schemaname NOT IN ('pg_catalog', 'information_schema');
 
+----------------- membuat table nasabah -----------------
 CREATE TABLE nasabah(
     id BIGSERIAL PRIMARY KEY,
     nama VARCHAR(150) NOT NULL,
@@ -17,7 +18,7 @@ CREATE TABLE nasabah(
     nomor_telepon VARCHAR(13) NOT NULL
 );
 
--- DESCRIBE TABLE /d+
+----------------- DESCRIBE TABLE /d+ -----------------
 select
     column_name,
     data_type,
@@ -29,6 +30,7 @@ from
 where
     table_name = 'nasabah';
 
+----------------- membuat table akun -----------------
 CREATE TABLE akun(
     id BIGSERIAL PRIMARY KEY,
     username VARCHAR(30) NOT NULL,
@@ -50,6 +52,7 @@ from
 where
     table_name = 'akun';
 
+----------------- membuat table transaksi -----------------
 CREATE TABLE transaksi(
     id BIGSERIAL PRIMARY KEY,
     deskripsi TEXT NOT NULL,
@@ -70,6 +73,7 @@ from
 where
     table_name = 'transaksi';
 
+----------------- membuat table jenis_transaksi -----------------
 CREATE TABLE jenis_transaksi(
     id SERIAL PRIMARY KEY,
     nama VARCHAR(255) NOT NULL,
@@ -87,7 +91,7 @@ from
 where
     table_name = 'jenis_transaksi';
 
---add foreign key
+----------------- add foreign key -----------------
 ALTER TABLE
     akun
 ADD
@@ -103,14 +107,14 @@ ALTER TABLE
 ADD
     CONSTRAINT fk_transaksi_jenis FOREIGN KEY (jenis_id) REFERENCES jenis_transaksi(id);
 
--- create data for table jenis transaksi
+----------------- create data for table jenis transaksi -----------------
 INSERT INTO
     jenis_transaksi (nama, description)
 VALUES
     ('penarikan', 'penarikan saldo akun pribadi'),
     ('setor', 'setor tunai ke saldo akun');
 
---create data for table nasabah
+----------------- create data for table nasabah -----------------
 INSERT INTO
     nasabah (nama, tgl_lahir, alamat, nomor_telepon)
 VALUES
@@ -121,6 +125,7 @@ VALUES
         '085708574368'
     );
 
+----------------- create data for table akun -----------------
 INSERT INTO
     akun (username, password, nasabah_id)
 VALUES
@@ -171,7 +176,7 @@ WHERE
     akun.id = transaksi_process.akun_id
     AND akun.id = saldo_akun.id;
 
--- show hasil transaksi
+----------------- show hasil transaksi -----------------
 SELECT
     *
 FROM
@@ -185,17 +190,15 @@ SELECT
     akun.saldo,
     transaksi.id as id_transaksi,
     transaksi.deskripsi,
-    transaksi.nominal,
+    transaksi.nominal as transaksi_nominal,
     jenis_transaksi.nama as kategori
 FROM
     nasabah
     RIGHT JOIN akun ON akun.nasabah_id = nasabah.id
     RIGHT JOIN transaksi on transaksi.akun_id = akun.id
-    LEFT JOIN jenis_transaksi on transaksi.jenis_id = jenis_transaksi.id
-
+    LEFT JOIN jenis_transaksi on transaksi.jenis_id = jenis_transaksi.id;
 
 ----------------- memulai transaksi untuk penarikan saldo serta melakukan update field saldo pada table akun -----------------
-
 WITH saldo_akun AS (
     SELECT
         id,
@@ -221,7 +224,7 @@ transaksi_process AS (
 UPDATE
     akun
 SET
-    saldo = saldo_akun.saldo - transaksi_process.nominal 
+    saldo = saldo_akun.saldo - transaksi_process.nominal
 FROM
     transaksi_process,
     saldo_akun
