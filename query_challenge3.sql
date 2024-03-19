@@ -115,6 +115,7 @@ SELECT
 from
     jenis_transaksi;
 
+--create data for table nasabah
 INSERT INTO
     nasabah (nama, tgl_lahir, alamat, nomor_telepon)
 VALUES
@@ -129,3 +130,18 @@ SELECT
     *
 FROM
     nasabah;
+
+INSERT INTO
+    akun (username, password, nasabah_id)
+VALUES
+    ('oukenzeumasio', 'rahasia', 1);
+
+INSERT INTO
+    akun (username, password, nasabah_id)
+VALUES
+    ('akhdanre', 'rahasia', 1);
+
+SELECT
+    *
+FROM
+    akun;
