@@ -69,3 +69,21 @@ from
     INFORMATION_SCHEMA.COLUMNS
 where
     table_name = 'transaksi';
+
+CREATE TABLE jenis_transaksi(
+    id SERIAL PRIMARY KEY,
+    nama VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL
+);
+
+
+select
+    column_name,
+    data_type,
+    character_maximum_length,
+    column_default,
+    is_nullable
+from
+    INFORMATION_SCHEMA.COLUMNS
+where
+    table_name = 'jenis_transaksi';
