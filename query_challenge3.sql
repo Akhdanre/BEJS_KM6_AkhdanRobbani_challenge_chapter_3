@@ -110,7 +110,6 @@ VALUES
     ('penarikan', 'penarikan saldo akun pribadi'),
     ('setor', 'setor tunai ke saldo akun');
 
-
 --create data for table nasabah
 INSERT INTO
     nasabah (nama, tgl_lahir, alamat, nomor_telepon)
@@ -131,3 +130,101 @@ INSERT INTO
     akun (username, password, nasabah_id)
 VALUES
     ('akhdanre', 'rahasia', 1);
+
+SELECT
+    *
+from
+    nasabah
+    RIGHT JOIN akun on nasabah.id = akun.nasabah_id;
+
+----------------- memulai transaksi untuk setor saldo serta melakukan update field saldo pada table akun -----------------
+WITH saldo_akun AS (
+    SELECT
+        id,
+        saldo
+    FROM
+        akun
+    WHERE
+        id = 1
+),
+transaksi_process AS (
+    INSERT INTO
+        transaksi (tanggal, nominal, jenis_id, akun_id, deskripsi)
+    VALUES
+        (
+            '2024-03-19',
+            40000,
+            2,
+            1,
+            'melakukan transaksi setor saldo'
+        ) RETURNING akun_id,
+        nominal
+)
+UPDATE
+    akun
+SET
+    saldo = transaksi_process.nominal + saldo_akun.saldo
+FROM
+    transaksi_process,
+    saldo_akun
+WHERE
+    akun.id = transaksi_process.akun_id
+    AND akun.id = saldo_akun.id;
+
+-- show hasil transaksi
+SELECT
+    *
+FROM
+    akun
+    RIGHT JOIN transaksi ON akun.id = transaksi.akun_id;
+
+---------------------------------------- show all data nasabah, akun dan transaksi ----------------------------------------
+SELECT
+    nasabah.nama,
+    akun.username,
+    akun.saldo,
+    transaksi.id as id_transaksi,
+    transaksi.deskripsi,
+    transaksi.nominal,
+    jenis_transaksi.nama as kategori
+FROM
+    nasabah
+    RIGHT JOIN akun ON akun.nasabah_id = nasabah.id
+    RIGHT JOIN transaksi on transaksi.akun_id = akun.id
+    LEFT JOIN jenis_transaksi on transaksi.jenis_id = jenis_transaksi.id
+
+
+----------------- memulai transaksi untuk penarikan saldo serta melakukan update field saldo pada table akun -----------------
+
+WITH saldo_akun AS (
+    SELECT
+        id,
+        saldo
+    FROM
+        akun
+    WHERE
+        id = 1
+),
+transaksi_process AS (
+    INSERT INTO
+        transaksi (tanggal, nominal, jenis_id, akun_id, deskripsi)
+    VALUES
+        (
+            '2024-03-19',
+            40000,
+            1,
+            1,
+            'melakukan transaksi penarikan saldo'
+        ) RETURNING akun_id,
+        nominal
+)
+UPDATE
+    akun
+SET
+    saldo = saldo_akun.saldo - transaksi_process.nominal 
+FROM
+    transaksi_process,
+    saldo_akun
+WHERE
+    akun.id = transaksi_process.akun_id
+    AND akun.id = saldo_akun.id;
