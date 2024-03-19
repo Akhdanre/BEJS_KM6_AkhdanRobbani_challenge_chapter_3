@@ -103,5 +103,29 @@ ALTER TABLE
 ADD
     CONSTRAINT fk_transaksi_jenis FOREIGN KEY (jenis_id) REFERENCES jenis_transaksi(id);
 
+-- create data for table jenis transaksi
+INSERT INTO
+    jenis_transaksi (nama, description)
+VALUES
+    ('penarikan', 'penarikan saldo akun pribadi'),
+    ('setor', 'setor tunai ke saldo akun');
 
+SELECT
+    *
+from
+    jenis_transaksi;
 
+INSERT INTO
+    nasabah (nama, tgl_lahir, alamat, nomor_telepon)
+VALUES
+    (
+        'Akhdan Robbani',
+        '2003-08-12',
+        'Babadan, Werungotok, Nganjuk',
+        '085708574368'
+    );
+
+SELECT
+    *
+FROM
+    nasabah;
